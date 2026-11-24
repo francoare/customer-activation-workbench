@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="An onboarding portfolio and intervention planner for verified first value.">
+  <meta name="theme-color" content="#14263e">
+  <title>Customer Activation Workbench</title>
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="shell">
+    <aside class="sidebar" aria-label="Workspace">
+      <a class="brand" href="#main" aria-label="Activation Workbench home">
+        <span class="brand-mark" aria-hidden="true">A</span>
+        <span>Activation<span class="brand-sub">Workbench</span></span>
+      </a>
+      <nav class="site-nav" aria-label="Workspace sections">
+        <a href="#interventions"><span class="nav-icon target-icon" aria-hidden="true"></span>Interventions</a>
+        <a href="#accounts"><span class="nav-icon accounts-icon" aria-hidden="true"></span>Accounts</a>
+      </nav>
+      <div class="sidebar-footer">
+        <span class="sidebar-avatar" aria-hidden="true">CS</span>
+        <span>Customer Success<span class="workspace-sub">Demo workspace</span></span>
+      </div>
+    </aside>
+    <main id="main" class="main-content" tabindex="-1">
+      <header class="page-header">
+        <div>
+          <p class="eyebrow">Customer onboarding</p>
+          <h1>Activation workbench</h1>
+          <p class="page-description">Track verified first value and choose where to intervene this week.</p>
+        </div>
+        <div class="date-context"><span>Demo date</span><time datetime="2026-11-24">Nov 24, 2026</time></div>
+      </header>
+      <div id="workspace-message" class="notice" role="status" hidden></div>
+      <section id="portfolio-summary" class="summary" aria-label="Portfolio summary"></section>
+      <section id="interventions" class="sections" aria-labelledby="interventions-title">
+        <div class="section-heading">
+          <div>
+            <h2 id="interventions-title" tabindex="-1">This week’s interventions</h2>
+            <p>Choose two accounts where a next step can move first value forward.</p>
+          </div>
+          <button id="show-rules" type="button" class="button ghost">Decision rules</button>
+        </div>
+        <div id="intervention-grid" class="intervention-grid"></div>
+      </section>
+      <section id="accounts" class="sections accounts-section" aria-labelledby="accounts-title">
+        <div class="section-heading">
+          <div>
+            <h2 id="accounts-title" tabindex="-1">Accounts</h2>
+            <p id="account-count" role="status"></p>
+          </div>
+          <div class="filters">
+            <label class="visually-hidden" for="account-search">Search accounts</label>
+            <input id="account-search" type="search" placeholder="Search accounts" autocomplete="off">
+            <label class="visually-hidden" for="status-filter">Filter by status</label>
+            <select id="status-filter">
+              <option value="all">All statuses</option>
+              <option value="Activated">Activated</option>
+              <option value="unverified">Unverified</option>
+              <option value="Blocked">Blocked</option>
+              <option value="Needs review">Needs review</option>
+              <option value="At risk">At risk</option>
+              <option value="On track">On track</option>
+              <option value="overdue">Overdue and unverified</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-frame">
+          <table role="table" aria-labelledby="accounts-title">
+            <thead role="rowgroup"><tr role="row"><th role="columnheader" scope="col">Account</th><th role="columnheader" scope="col">Status</th><th role="columnheader" scope="col">Target</th><th role="columnheader" scope="col">Next dependency</th><th role="columnheader" scope="col">Account owner</th><th role="columnheader" scope="col"><span class="visually-hidden">Details</span></th></tr></thead>
+            <tbody id="account-rows" role="rowgroup"></tbody>
+          </table>
+          <div id="empty-state" class="empty-state" hidden>
+            <h3>No accounts match</h3>
+            <p>Clear the filters to see the full portfolio.</p>
+            <button id="clear-filters" type="button" class="button secondary">Clear filters</button>
+          </div>
+        </div>
+      </section>
+      <footer class="main-footer">
+        <p>Simulated customer data. Changes are saved in this browser.</p>
+        <button id="show-reset" class="button ghost" type="button">Reset demo</button>
+      </footer>
+    </main>
+  </div>
+  <dialog id="account-dialog" class="drawer" aria-labelledby="account-title">
+    <div class="drawer-shell">
+      <header class="drawer-header">
+        <div><p class="eyebrow">Account detail</p><h2 id="account-title" tabindex="-1"></h2></div>
+        <button class="close-button" type="button" data-close aria-label="Close account details">×</button>
+      </header>
+      <div class="drawer-body">
+        <div id="account-flash" class="notice" role="status" hidden></div>
+        <div id="account-overview"></div>
+        <div class="drawer-nav" aria-label="Account sections">
+          <button type="button" class="button secondary" data-panel="action">Intervention</button>
+          <button type="button" class="button secondary" data-panel="progress">Milestone &amp; dependencies</button>
+          <button type="button" class="button secondary" data-panel="evidence">First value</button>
+        </div>
+        <div id="account-panel"></div>
+      </div>
+    </div>
+  </dialog>
+  <dialog id="rules-dialog" class="small-dialog" aria-labelledby="rules-title">
+    <header class="drawer-header"><h2 id="rules-title">Decision rules</h2><button class="close-button" type="button" data-close aria-label="Close decision rules">×</button></header>
+    <div class="dialog-content">
+      <p>Add urgency and the ability to move the next dependency. The higher total comes first. Ties go to the earlier target, then the account name.</p>
+      <dl class="rule-list">
+        <div><dt>Urgency</dt><dd>Overdue through tomorrow +3<br>Due in 2–3 days +2<br>Due in 4–7 days +1<br>Later +0</dd></div>
+        <div><dt>Ability to move</dt><dd>Internal blocker +4<br>Joint workflow validation +3<br>Missing owner or next step +1<br>Customer-owned decision or no open dependency +0</dd></div>
+      </dl>
+      <p>Only the most actionable open dependency contributes. Verified accounts and saved interventions are excluded from suggestions. A saved intervention occupies a slot until removed.</p>
+    </div>
+  </dialog>
+  <dialog id="reset-dialog" class="small-dialog" aria-labelledby="reset-title">
+    <header class="drawer-header"><h2 id="reset-title">Reset the demo?</h2><button class="close-button" type="button" data-close aria-label="Close reset confirmation">×</button></header>
+    <div class="dialog-content">
+      <p>This restores the six original accounts and removes changes saved in this browser.</p>
+      <div class="form-buttons"><button type="button" class="button secondary" data-close>Cancel</button><button type="button" class="button danger" id="reset-data">Reset demo</button></div>
+    </div>
+  </dialog>
+</body>
+</html>
